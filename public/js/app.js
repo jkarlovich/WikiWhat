@@ -22,17 +22,16 @@ app.controller('MainCtrl', ['$scope', '$http', function($scope, $http) {
   $scope.slider = {
     
   };
-  
+  $scope.searchTerm = '';
  
    $scope.search = function() {
-
     $http.jsonp('https://en.wikipedia.org/w/api.php', {
       headers: {
         'Content-Type': 'application/json; charset=UTF-8'
       },
       params: {
         'action': 'query',
-        'titles': 'Hanami',
+        'titles': $scope.searchTerm,
         'prop': 'revisions',
         'rvprop': 'timestamp|content',
         'format': 'json',
@@ -41,19 +40,9 @@ app.controller('MainCtrl', ['$scope', '$http', function($scope, $http) {
       }
     }).then(function success(res) {
       if(res.status = 200) {
-        $scope.results = res.data.query.pages[490631].revisions;
-        // $scope.results.forEach(function(step){
-        //   $scope.steps.unshift(step.timestamp);
-        // });
-
-
-// value: $scope.steps.length-1,
-//           options: {
-//             floor: $scope.steps[0],
-//             ceil: $scope.steps.length-1,
-//             stepsArray: $scope.steps
-//             }
-//           }
+        var number = res.data.query.pages[Object.keys(res.data.query.pages)];
+        $scope.results = number.revisions;
+        
         $scope.slider = {
           value: 0,
           options: {
@@ -63,11 +52,10 @@ app.controller('MainCtrl', ['$scope', '$http', function($scope, $http) {
             }
           }
         }
-       console.log(res.data);
+       console.log(res.data.query.pages);
+       $scope.searchTerm = '';
     }, function error(res) {
       console.log(res.data);
     });
   };
-
-      $scope.search();
 }]);
