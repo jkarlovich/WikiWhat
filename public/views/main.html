@@ -8,5 +8,7 @@
       <rzslider id="slider" rz-slider-model="slider.value" rz-slider-options="slider.options"></rzslider>
   </div>
 <p>{{results[slider.value].timestamp}}</p>
-<p>{{results[slider.value]['*']}}</p>
-</div>
+<div ng-bind-html="wikiparsed[slider.value]"></div>
+
+<!-- ng-bind-html="wikiparsed[slider.value]" -->
+<!-- ng-bind-html="JsDiff.diffWords(wikiparsed[slider.(value-1)], wikiparsed[slider.value])" -->

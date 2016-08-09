@@ -1,4 +1,4 @@
-var app = angular.module('wikiWhatApp', ['ui.router', 'ngResource', 'rzModule']);
+var app = angular.module('wikiWhatApp', ['ui.router', 'ngResource', 'rzModule', 'ngSanitize']);
 
 app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', function($stateProvider, $urlRouterProvider, $locationProvider){
   $urlRouterProvider.otherwise('/404');
@@ -18,7 +18,7 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', functio
 app.controller('MainCtrl', ['$scope', '$http', function($scope, $http) {
 
   $scope.results = [];
-  $scope.steps = [];
+  $scope.wikiparsed = [];
   $scope.slider = {
     
   };
@@ -42,12 +42,24 @@ app.controller('MainCtrl', ['$scope', '$http', function($scope, $http) {
       if(res.status = 200) {
         var number = res.data.query.pages[Object.keys(res.data.query.pages)];
         $scope.results = number.revisions;
+        // $scope.results.forEach(function(step) {
+        //   $scope.steps.unshift(step);
+        // });
+        $scope.results.forEach(function(wiki) {
+          //console.log(result['*']);
+          $scope.wikiparsed.push(wiky.process(wiki['*']));
+          // console.log(wiki['*']);
+          //console.log($scope.wikiparsed);
+        });
         
+        console.log($scope.wikiparsed);
         $scope.slider = {
           value: 0,
           options: {
             floor: 0,
-            ceil: $scope.results.length-1
+            ceil: $scope.results.length-1,
+            hideLimitLabels: true,
+            hidePointerLabels: true
             // stepsArray: $scope.steps
             }
           }
@@ -58,4 +70,7 @@ app.controller('MainCtrl', ['$scope', '$http', function($scope, $http) {
       console.log(res.data);
     });
   };
+
+  
+
 }]);
