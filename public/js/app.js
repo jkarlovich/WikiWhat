@@ -23,6 +23,9 @@ app.controller('MainCtrl', ['$scope', '$http', function($scope, $http) {
     
   };
   $scope.searchTerm = '';
+
+  var newVal = $scope.slider.value+1;
+  var oldVal = $scope.slider.value;
  
    $scope.search = function() {
     $http.jsonp('https://en.wikipedia.org/w/api.php', {
@@ -42,17 +45,10 @@ app.controller('MainCtrl', ['$scope', '$http', function($scope, $http) {
       if(res.status = 200) {
         var number = res.data.query.pages[Object.keys(res.data.query.pages)];
         $scope.results = number.revisions;
-        // $scope.results.forEach(function(step) {
-        //   $scope.steps.unshift(step);
-        // });
         $scope.results.forEach(function(wiki) {
-          //console.log(result['*']);
           $scope.wikiparsed.push(wiky.process(wiki['*']));
-          // console.log(wiki['*']);
-          //console.log($scope.wikiparsed);
         });
-        
-        console.log($scope.wikiparsed);
+
         $scope.slider = {
           value: 0,
           options: {
@@ -60,17 +56,26 @@ app.controller('MainCtrl', ['$scope', '$http', function($scope, $http) {
             ceil: $scope.results.length-1,
             hideLimitLabels: true,
             hidePointerLabels: true
-            // stepsArray: $scope.steps
-            }
           }
         }
-       console.log(res.data.query.pages);
-       $scope.searchTerm = '';
+
+        $scope.oldVal = $scope.slider.value;
+      }
+      console.log(res.data.query.pages);
+      $scope.searchTerm = '';
     }, function error(res) {
       console.log(res.data);
     });
   };
 
-  
+
+  $scope.$watch('slider.value', function(newVal, oldVal){
+    var string1 = $scope.wikiparsed[oldVal]
+    var string2 = $scope.wikiparsed[newVal]
+    if (string1 && string2) {
+      $scope.difference =JsDiff.diffWords(string1, string2);
+      console.log($scope.difference);
+    }
+  });
 
 }]);
