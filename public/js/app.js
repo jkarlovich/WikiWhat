@@ -47,31 +47,13 @@ app.controller('MainCtrl', ['$scope', '$http', function($scope, $http) {
     // hide the instructions
     $scope.hideStart = true;
 
-    // query mediawiki
-    $http.jsonp('https://en.wikipedia.org/w/api.php', {
-      headers: {
-        'Content-Type': 'application/json; charset=UTF-8'
-      },
-      params: {
-        'action': 'query',
-        'titles': $scope.searchTerm,
-        'prop': 'revisions',
-        'rvprop': 'timestamp|content',
-        'format': 'json',
-        'rvlimit': 'max',
-        'callback': 'JSON_CALLBACK'
-      }
+    $http.post('/results', {searchTerm: $scope.searchTerm
     }).then(function success(res) {
-      //console.log($scope.searchTerm);
-      if(res.status = 200) {
-        var number = res.data.query.pages[Object.keys(res.data.query.pages)];
-        $scope.results = number.revisions;
-        // parse the wikitext and push it to wikiparsed variable
-        $scope.results.forEach(function(wiki) {
-          $scope.wikiparsed.push(wiky.process(wiki['*']));
-        });
-
-        // set the slider to the length of the array
+      console.log('back to the front')
+      $scope.results = res.data.data.revisions;
+      $scope.wikiparsed = res.data.content;
+      //console.log(res.data);
+              // set the slider to the length of the array
         $scope.slider = {
           value: 0,
           options: {
@@ -81,14 +63,55 @@ app.controller('MainCtrl', ['$scope', '$http', function($scope, $http) {
             hidePointerLabels: true
           }
         }
-      }
-      // console.log(res.data.query.pages);
       // reset searchTerm
       $scope.searchTerm = '';
 
-    }, function error(res) {
+    }), function error(res) {
       console.log(res.data);
-    });
+    };
+
+    // // query mediawiki
+    // $http.jsonp('https://en.wikipedia.org/w/api.php', {
+    //   headers: {
+    //     'Content-Type': 'application/json; charset=UTF-8'
+    //   },
+    //   params: {
+    //     'action': 'query',
+    //     'titles': $scope.searchTerm,
+    //     'prop': 'revisions',
+    //     'rvprop': 'timestamp|content',
+    //     'format': 'json',
+    //     'rvlimit': 'max',
+    //     'callback': 'JSON_CALLBACK'
+    //   }
+    // }).then(function success(res) {
+    //   //console.log($scope.searchTerm);
+    //   if(res.status = 200) {
+    //     var number = res.data.query.pages[Object.keys(res.data.query.pages)];
+    //     $scope.results = number.revisions;
+    //     // parse the wikitext and push it to wikiparsed variable
+    //     $scope.results.forEach(function(wiki) {
+    //       $scope.wikiparsed.push(wiky.process(wiki['*']));
+    //     });
+
+    //     // set the slider to the length of the array
+    //     $scope.slider = {
+    //       value: 0,
+    //       options: {
+    //         floor: 0,
+    //         ceil: $scope.results.length-1,
+    //         hideLimitLabels: true,
+    //         hidePointerLabels: true
+    //       }
+    //     }
+    //   }
+    //   // console.log(res.data.query.pages);
+    //   // reset searchTerm
+    //   $scope.searchTerm = '';
+
+    // }, function error(res) {
+    //   console.log(res.data);
+    // });
   };
 
   // watch for the slider value to change

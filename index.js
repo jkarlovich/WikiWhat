@@ -1,6 +1,7 @@
 var express = require('express');
 var request = require('request');
 var bodyParser = require('body-parser');
+var wtf_wikipedia = require('wtf_wikipedia');
 
 var app = express();
 
@@ -12,30 +13,31 @@ app.get('/', function(req, res) {
   res.render('index.html');
 });
 
-// app.post('/results', function(req, res){
-//   console.log(req.body.searchTerm);
-//   request({
-//      url: 'https://en.wikipedia.org/w/api.php',
-//     //  headers: {
-//     //   'Content-Type': 'application/json; charset=UTF-8'
-//     // },
-//      params: {
-//         'action': 'query',
-//         'titles': req.body.searchTerm,
-//         'prop': 'revisions',
-//         'rvprop': 'timestamp|content',
-//         'format': 'json',
-//         'rvlimit': 'max'
-//         //'callback': 'JSON_CALLBACK'
-//      }
-//    }, function(error, response, body) {
-//     if (!error && response.statusCode === 200) {
-//        var data = body;
-//        console.log(data);
-//     }; 
-//     //res.send({data:data});
-//     });
-// });
+app.post('/results', function(req, res){
+  console.log(req.body.searchTerm);
+  request({
+     url: 'https://en.wikipedia.org/w/api.php',
+     qs: {
+        'action': 'query',
+        'titles': req.body.searchTerm,
+        'prop': 'revisions',
+        'rvprop': 'timestamp|content',
+        'format': 'json',
+        'rvlimit': 'max'
+     }
+   }, function(error, response, body) {
+    if (!error && response.statusCode === 200) {
+       var data = JSON.parse(body);
+       data = data.query.pages[Object.keys(data.query.pages)];
+       var results = data.revisions;
+       var content = [];
+       results.forEach(function(result) {
+        content.push(wtf_wikipedia.plaintext(result['*']));
+      });
+    }; 
+    res.send({data:data, content:content});
+    });
+});
 
 app.get('/*', function(req, res) {
   res.sendFile(__dirname, 'public/index.html');
