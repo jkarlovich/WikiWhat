@@ -8,11 +8,6 @@
       <rzslider id="slider" rz-slider-model="slider.value" rz-slider-options="slider.options"></rzslider>
   </div>
 <p>{{results[slider.value].timestamp}}</p>
-<span ng-repeat="diff in difference" ng-class="">
-{{diff.value}}
+<div ng-if="!slider.value" class="border">{{wikiparsed[0]}}</div>
+<span ng-repeat="diff in difference" ng-class="{'added': diff.added, 'removed': diff.removed}" ng-bind-html="diff.value">
 </span>
-<!-- <div>{{wikiparsed[slider.value]}}</div> -->
-
-<!-- ng-bind-html="wikiparsed[slider.value]" -->
-<!-- ng-bind-html="JsDiff.diffWords(wikiparsed[slider.(value-1)], wikiparsed[slider.value])" -->
-<!-- ng-bind-html="wikiparsed[slider.value]" -->
