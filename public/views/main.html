@@ -7,7 +7,11 @@
   <div>
       <rzslider id="slider" rz-slider-model="slider.value" rz-slider-options="slider.options"></rzslider>
   </div>
+  <div ng-hide="hideStart">
+    <h2>Search for a Wikipedia page title and compare the changes from revision to revision.<h2>
+  </div>
 <p>{{results[slider.value].timestamp}}</p>
 <div ng-if="!slider.value" class="border">{{wikiparsed[0]}}</div>
 <span ng-repeat="diff in difference" ng-class="{'added': diff.added, 'removed': diff.removed}" ng-bind-html="diff.value">
 </span>
+
