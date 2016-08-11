@@ -16,7 +16,7 @@
   </div>
   <div class="loading" ng-show="loading"><h1>Loading...</h1></div>
   <p>{{results[slider.value].timestamp}}</p>
-  <div ng-if="!slider.value" class="border" ng-bind-html="wikiparsed[0]"></div>
+  <div ng-show="start" class="border" ng-bind-html="wikiparsed[0]"></div>
   <span ng-repeat="diff in difference" ng-class="{'added': diff.added, 'removed': diff.removed}" ng-bind-html="diff.value"></span>
 </div>
 

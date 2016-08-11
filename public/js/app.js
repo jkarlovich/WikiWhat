@@ -39,6 +39,7 @@ app.controller('MainCtrl', ['$scope', '$http', function($scope, $http) {
     // reset variables
     $scope.head = '';   // title of search term
     $scope.results = [];  //results as objects
+    $scope.difference = [];
     $scope.wikiparsed = []; //just the content of the objects parsed
     $scope.slider = {   // slider has no value again
       value: 0,
@@ -52,7 +53,8 @@ app.controller('MainCtrl', ['$scope', '$http', function($scope, $http) {
     $scope.hideStart = true;
     $scope.loading = true;
 
-
+    // hide initial state of info
+    $scope.start = false;
 
     if ($scope.searchTerm === 'HanamiKolve') {
       Kolvescript.forEach(function(foo) {
@@ -75,14 +77,18 @@ app.controller('MainCtrl', ['$scope', '$http', function($scope, $http) {
       $scope.searchTerm = '';
 
       // turn off loading
-      $scope.loading = false;  
+      $scope.loading = false; 
+
+      //show initial content
+      $scope.start = true;
+
     } else {
     // the actual query call
       $http.post('/results', {searchTerm: $scope.searchTerm
       }).then(function success(res) {
+        $scope.start = true;
         $scope.results = res.data.data.revisions;
         $scope.wikiparsed = res.data.content;
-
         // set the slider to the length of the results array
           $scope.slider = {
             value: 0,
@@ -156,10 +162,11 @@ app.controller('MainCtrl', ['$scope', '$http', function($scope, $http) {
   $scope.$watch('slider.value', function(newVal, oldVal){
     // supposed to show comparing content when diff takes too long
     $scope.comparing = true;
+    // hide initial content
+    $scope.start = false;
     // check the difference in the revision content, if there is content in string1 and string2
     var string1 = $scope.wikiparsed[oldVal];
     var string2 = $scope.wikiparsed[newVal];
-
     if (string1 && string2) {
       $scope.difference =JsDiff.diffWords(string1, string2);
     }
