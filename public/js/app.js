@@ -17,8 +17,8 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', functio
 
 app.controller('MainCtrl', ['$scope', '$http', function($scope, $http) {
   // set variables
-  $scope.results = [];
-  $scope.wikiparsed = [];
+  $scope.results = timestamps;
+  $scope.wikiparsed =[];
   $scope.slider = {
     value: 0,
     options: {
@@ -29,14 +29,38 @@ app.controller('MainCtrl', ['$scope', '$http', function($scope, $http) {
   $scope.searchTerm = '';
   var newVal = $scope.slider.value+1;
   var oldVal = $scope.slider.value;
-  $scope.hideStart = false;
+  $scope.hideStart = false;   // hides/shows the instructions
+  $scope.loading = false;     // shows when content loading
+  $scope.comparing = false;   // supposed to show when diffs take too long
  
-   $scope.search = function() {
+Kolvescript.forEach(function(foo) {
+  $scope.wikiparsed.push(foo.content);
+});
 
+console.log($scope.wikiparsed);
+
+$scope.slider = {
+    value: 0,
+    options: {
+      floor: 0,
+      ceil: $scope.results.length-1,
+      hideLimitLabels: true,
+      hidePointerLabels: true
+    }
+  };
+
+
+
+
+
+  // search for the search term
+   $scope.search = function() {
+    
     // reset variables
-    $scope.results = [];
-    $scope.wikiparsed = [];
-    $scope.slider = {
+    $scope.head = '';   // title of search term
+    $scope.results = [];  //results as objects
+    $scope.wikiparsed = []; //just the content of the objects parsed
+    $scope.slider = {   // slider has no value again
       value: 0,
       options: {
         hideLimitLabels: true,
@@ -44,16 +68,17 @@ app.controller('MainCtrl', ['$scope', '$http', function($scope, $http) {
       }
     };
 
-    // hide the instructions
+    // hide the instructions and show loading
     $scope.hideStart = true;
+    $scope.loading = true;
 
+    // the actual query call
     $http.post('/results', {searchTerm: $scope.searchTerm
     }).then(function success(res) {
-      console.log('back to the front')
       $scope.results = res.data.data.revisions;
       $scope.wikiparsed = res.data.content;
-      //console.log(res.data);
-              // set the slider to the length of the array
+
+      // set the slider to the length of the results array
         $scope.slider = {
           value: 0,
           options: {
@@ -63,14 +88,21 @@ app.controller('MainCtrl', ['$scope', '$http', function($scope, $http) {
             hidePointerLabels: true
           }
         }
+
+      // capture search term in variable for title of page
+      $scope.head = $scope.searchTerm;
+
       // reset searchTerm
       $scope.searchTerm = '';
+
+      // turn off loading
+      $scope.loading = false;
 
     }), function error(res) {
       console.log(res.data);
     };
 
-    // // query mediawiki
+    // query mediawiki on the front end - other option but slower
     // $http.jsonp('https://en.wikipedia.org/w/api.php', {
     //   headers: {
     //     'Content-Type': 'application/json; charset=UTF-8'
@@ -112,18 +144,32 @@ app.controller('MainCtrl', ['$scope', '$http', function($scope, $http) {
     // }, function error(res) {
     //   console.log(res.data);
     // });
-  };
+
+  }; // end of search function
 
   // watch for the slider value to change
   $scope.$watch('slider.value', function(newVal, oldVal){
+    // supposed to show comparing content when diff takes too long
+    $scope.comparing = true;
+    // check the difference in the revision content, if there is content in string1 and string2
     var string1 = $scope.wikiparsed[oldVal];
     var string2 = $scope.wikiparsed[newVal];
-    // check the difference in the revision content, if there is content in string1 and string2
+
     if (string1 && string2) {
       $scope.difference =JsDiff.diffWords(string1, string2);
     }
+
+    // supposed to hide comparing content
+    $scope.comparing = false;
   });
 
-
-// .replace(/\[|\]|{|}|<img>|<\/img>|\[[|\]]|\{{|\}}|<img([\w\W]+?)>|<\/i>|<i>|<\/b>|<ref>|<\/ref>|\/>|<a([\w\W]+?)>/g, ''));
-}]);
+$scope.slider = {
+          value: 0,
+          options: {
+            floor: 0,
+            ceil: $scope.results.length-1,
+            hideLimitLabels: true,
+            hidePointerLabels: true
+          }
+        }
+}]); // end of main controller

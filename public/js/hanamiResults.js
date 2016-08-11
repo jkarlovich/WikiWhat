@@ -1,0 +1,8 @@
+var Kolvescript = [{'content': '<p><strong>Hanami</strong>, lit. &quot;Flower Viewing&quot; is the Japanese traditional custom of enjoying the beauty of flowers, &quot;flower&quot; in this case almost always meaning <a href="cherry" class="uri" title="wikilink">cherry</a> blossoms (Jp. <em><a href="sakura" class="uri" title="wikilink">sakura</a></em>). From late March to early April, Sakura go into full bloom all over Japan. In modern-day Japan, Hanami mostly means of having an outdoor party beneath the sakura, which are pretty in daylight and enchanting at night.</p>' },
+  {'content': '<p>is the Japanese traditional custom of enjoying the beauty of flowers, &quot;flower&quot; in this case almost always meaning <a href="cherry_blossom" title="wikilink">cherry blossoms</a> or <a href="Prunus_mume" title="wikilink">ume blossoms</a>. From the end of March to early May, sakura bloom all over Japan, and around the first of February on the island of Okinawa. The  is announced each year by the weather bureau, and is watched carefully by those planning <em>hanami</em> as the blossoms only last a week or two. In modern-day Japan, <em>hanami</em> mostly consists of having an outdoor party beneath the sakura during daytime or at night. <em>Hanami</em> at night is called . In many places such as <a href="Ueno_Park" title="wikilink">Ueno Park</a> temporary <a href="paper_lantern" title="wikilink">paper lanterns</a> are hung for the purpose of <em>yozakura</em>. On the island of Okinawa, decorative electric lanterns are hung in the trees for evening enjoyment, such as on the trees ascending Mt. Yae, near Motobu Town, or at Nakajin Castle.</p>'}
+  ];
+
+  var timestamps = [
+    '1',
+    '2'
+  ];

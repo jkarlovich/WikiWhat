@@ -1,17 +1,22 @@
-<h1>Main Page</h1>
-<div>
-  <form ng-submit="search()">
-    <input type="text" ng-model="searchTerm"/>
-    <button type="submit">Search</button>
-  </form>
+<form ng-submit="search()">
+  <input type="text" ng-model="searchTerm"/>
+  <button type="submit">Search</button>
+</form>
+<div class="info">
+  <h1 class="head">{{head}}</h1>
+  <h2>From Wikipedia, the free encyclopedia</h2>
+  <div class="key">
+  </div>
   <div>
       <rzslider id="slider" rz-slider-model="slider.value" rz-slider-options="slider.options"></rzslider>
   </div>
+  <h1 ng-show="comparing">Comparing Content</h1>
   <div ng-hide="hideStart">
-    <h2>Search for a Wikipedia page title and compare the changes from revision to revision.<h2>
+    <h4>Search for a Wikipedia page title and compare the changes from revision to revision.</h4>
   </div>
-<p>{{results[slider.value].timestamp}}</p>
-<div ng-if="!slider.value" class="border">{{wikiparsed[0]}}</div>
-<span ng-repeat="diff in difference" ng-class="{'added': diff.added, 'removed': diff.removed}" ng-bind-html="diff.value">
-</span>
+  <div class="loading" ng-show="loading"><h1>Loading...</h1></div>
+  <p ng-bind-html="wikiparsed[slider.value]"></p>
+  <div ng-if="!slider.value" class="border" ng-bind-html={{wikiparsed[0]}}></div>
+  <span ng-repeat="diff in difference" ng-class="{'added': diff.added, 'removed': diff.removed}" ng-bind-html="diff.value"></span>
+</div>
 
