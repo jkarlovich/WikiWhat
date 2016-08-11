@@ -17,7 +17,7 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', functio
 
 app.controller('MainCtrl', ['$scope', '$http', function($scope, $http) {
   // set variables
-  $scope.results = timestamps;
+  $scope.results = [];
   $scope.wikiparsed =[];
   $scope.slider = {
     value: 0,
@@ -33,26 +33,6 @@ app.controller('MainCtrl', ['$scope', '$http', function($scope, $http) {
   $scope.loading = false;     // shows when content loading
   $scope.comparing = false;   // supposed to show when diffs take too long
  
-Kolvescript.forEach(function(foo) {
-  $scope.wikiparsed.push(foo.content);
-});
-
-console.log($scope.wikiparsed);
-
-$scope.slider = {
-    value: 0,
-    options: {
-      floor: 0,
-      ceil: $scope.results.length-1,
-      hideLimitLabels: true,
-      hidePointerLabels: true
-    }
-  };
-
-
-
-
-
   // search for the search term
    $scope.search = function() {
     
@@ -72,23 +52,22 @@ $scope.slider = {
     $scope.hideStart = true;
     $scope.loading = true;
 
-    // the actual query call
-    $http.post('/results', {searchTerm: $scope.searchTerm
-    }).then(function success(res) {
-      $scope.results = res.data.data.revisions;
-      $scope.wikiparsed = res.data.content;
 
-      // set the slider to the length of the results array
-        $scope.slider = {
-          value: 0,
-          options: {
-            floor: 0,
-            ceil: $scope.results.length-1,
-            hideLimitLabels: true,
-            hidePointerLabels: true
-          }
+
+    if ($scope.searchTerm === 'HanamiKolve') {
+      Kolvescript.forEach(function(foo) {
+        $scope.wikiparsed.push(foo.content);
+      });
+      $scope.results = timestamps;
+      $scope.slider = {
+        value: 0,
+        options: {
+          floor: 0,
+          ceil: $scope.results.length-1,
+          hideLimitLabels: true,
+          hidePointerLabels: true
         }
-
+      }
       // capture search term in variable for title of page
       $scope.head = $scope.searchTerm;
 
@@ -96,12 +75,38 @@ $scope.slider = {
       $scope.searchTerm = '';
 
       // turn off loading
-      $scope.loading = false;
+      $scope.loading = false;  
+    } else {
+    // the actual query call
+      $http.post('/results', {searchTerm: $scope.searchTerm
+      }).then(function success(res) {
+        $scope.results = res.data.data.revisions;
+        $scope.wikiparsed = res.data.content;
 
-    }), function error(res) {
-      console.log(res.data);
+        // set the slider to the length of the results array
+          $scope.slider = {
+            value: 0,
+            options: {
+              floor: 0,
+              ceil: $scope.results.length-1,
+              hideLimitLabels: true,
+              hidePointerLabels: true
+            }
+          }
+
+        // capture search term in variable for title of page
+        $scope.head = $scope.searchTerm;
+
+        // reset searchTerm
+        $scope.searchTerm = '';
+
+        // turn off loading
+        $scope.loading = false;
+
+      }), function error(res) {
+        console.log(res.data);
+      };
     };
-
     // query mediawiki on the front end - other option but slower
     // $http.jsonp('https://en.wikipedia.org/w/api.php', {
     //   headers: {

@@ -3,6 +3,6 @@ var Kolvescript = [{'content': '<p><strong>Hanami</strong>, lit. &quot;Flower Vi
   ];
 
   var timestamps = [
-    '1',
-    '2'
+    {'timestamp': '1'},
+    {'timestamp': '2'}
   ];
