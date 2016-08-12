@@ -2,7 +2,8 @@
 
 Search for a Wikipedia page and compare the changes from revision to revision.
 
-[Use the App Here](https://.herokuapp.com/)
+[Use the App Here](https://wikiwhat.herokuapp.com/)
+[Repo](https://github.com/jkarlovich/WikiWhat)
 
 ##Approach
 The first thing I tried to do was set up my routes involving my API calls.  The Eventful API was very frustrating because some of the keys in the opject returned would be an array in some restults and a key/value pair in another and sometimes null, so a lot of if...else statements needed to be put into place to display the restults correctly.  From there, I set up my Google Places API call.  From there, I set up my profile results and my delete buttons.  Then I added the map.  Lots of styling happened at the end but some was done along the way as well.  Tried to work on responsive design as well.
@@ -13,7 +14,6 @@ The first thing I tried to do was set up my routes involving my API calls.  The 
   * [Bootstrap](http://getbootstrap.com/)
   * [Google Fonts](https://www.google.com/fonts)
   * [Angular](https://angularjs.org/)
-  * [Moment](http://momentjs.com/)
   * [Express](http://expressjs.com/)
 
 
@@ -26,6 +26,6 @@ The first thing I tried to do was set up my routes involving my API calls.  The 
   * Another issue is that when querying the mediawiki api, it only gives you the last 50 revisions.  I think there might be a way to get the next 50 but I ran out of time to look into it.  Idealy, it would be great if when the slider got to the end, the next 50 revisions populated.
   * Another thing is that the slider works in both direction, but it always compares the current position to the position+1.  I would like to make the comparision work in reverse when sliding the slider to the left.  I was having issues with saving the current $scope.slider.value in a variable as that value is being watched and updates automatically.
   * I would have liked to get the slider set up in reverse, with most recent revision on the right, and early revisions on the left.  When I think of a timeline, I think of past on the left, future on the right.  For some reason I couldn't get the slider to do this.  I tried ordering the queries in the opposite order but for some reason it wasn't working.
-  
-  * I would also like to add animation to the "Loading..." message.
   * I want to format the timestamps.
+  * I would also like to add animation to the "Loading..." message.
+
