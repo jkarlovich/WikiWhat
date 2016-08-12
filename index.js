@@ -23,28 +23,28 @@ app.post('/results', function(req, res){
         'prop': 'revisions',
         'rvprop': 'timestamp|content',
         'format': 'json',
-        'rvlimit': '0'
+        'rvlimit': 'max'
      }
    }, function(error, response, body) {
     if (!error && response.statusCode === 200) {
       var data = JSON.parse(body);
       data = data.query.pages[Object.keys(data.query.pages)];
       var results = data.revisions;
-      console.log('results: ' + results);
-      console.log('---------------------');
-      console.log(results);
-      console.log('----------------------');
-      console.log(results[0]['*']);
       var content = [];
       results.forEach(function(result) {
-        var foo = [];
-        foo.push(wtf_wikipedia.plaintext(result['*']));
-        //console.log(foo);
-        //var bar = foo.replace(/\n/, 'AA');
-        //console.log('bar: ' + bar);
+        // console.log(result);
+        // result['*'] = result['*'].replace(/\\n/g, 'AAAAAAAA');
+        // console.log('------------');
+        // console.log(result);
+        // console.log('----------------');
+        // result['*'] = wtf_wikipedia.plaintext(result['*']);
+        // console.log(result);
+        // console.log('-------------');
+        // content.push(result['*'].replace('AAAAAAAA', '<br>'));
+        // console.log(content);
+        // console.log('----------------');
         content.push(wtf_wikipedia.plaintext(result['*']));
       });
-      console.log(content);
     }; 
     res.send({data:data, content:content});
     });

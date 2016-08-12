@@ -56,11 +56,13 @@ app.controller('MainCtrl', ['$scope', '$http', function($scope, $http) {
     // hide initial state of info
     $scope.start = false;
 
-    if ($scope.searchTerm === 'HanamiKolve') {
+    if ($scope.searchTerm === 'Hanami+') {
       Kolvescript.forEach(function(foo) {
         $scope.wikiparsed.push(foo.content);
       });
-      $scope.results = timestamps;
+      timestamps.forEach(function(timestamp) {
+         $scope.results.push(timestamp);
+      });
       $scope.slider = {
         value: 0,
         options: {
@@ -82,12 +84,16 @@ app.controller('MainCtrl', ['$scope', '$http', function($scope, $http) {
       //show initial content
       $scope.start = true;
 
+    } else if($scope.searchTerm.length === 0) {
+      $scope.loading = false;
+      $scope.hideStart = false;
     } else {
     // the actual query call
       $http.post('/results', {searchTerm: $scope.searchTerm
       }).then(function success(res) {
         $scope.start = true;
         $scope.results = res.data.data.revisions;
+        //$scope.timestamps = res.data.timestamps;
         $scope.wikiparsed = res.data.content;
         // set the slider to the length of the results array
           $scope.slider = {
@@ -99,7 +105,6 @@ app.controller('MainCtrl', ['$scope', '$http', function($scope, $http) {
               hidePointerLabels: true
             }
           }
-
         // capture search term in variable for title of page
         $scope.head = $scope.searchTerm;
 

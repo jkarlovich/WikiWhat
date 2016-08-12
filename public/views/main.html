@@ -1,14 +1,18 @@
 <form ng-submit="search()">
   <input type="text" ng-model="searchTerm"/>
-  <button type="submit">Search</button>
+  <button type="submit">
+    <i class="fa fa-search" aria-hidden="true"></i>
+  </button>
 </form>
 <div class="info">
   <h1 class="head">{{head}}</h1>
   <h2>From Wikipedia, the free encyclopedia</h2>
-  <div class="key">
-  </div>
   <div>
       <rzslider id="slider" rz-slider-model="slider.value" rz-slider-options="slider.options"></rzslider>
+  </div>
+  <div class="key">
+    <h2 class="added">ADDED CONTENT</h2>
+    <h2 class="removed">REMOVED CONTENT</h2>
   </div>
   <h1 ng-show="comparing">Comparing Content</h1>
   <div ng-hide="hideStart">
