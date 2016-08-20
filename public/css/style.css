@@ -23,7 +23,6 @@ body {
 }
 
 .logo {
-  //height: 148px;
   width: 84%;
 }
 
@@ -90,11 +89,11 @@ h2 {
 
 h1.app-name{
   text-align:center;
-  margin: -44px 0 0 0;
+  margin: -27% 0 0 0;
   padding: 0 0 48px 0;
   background-color: rgb(232, 231, 231);
   font-family: 'Scope One', serif;
-  font-size: 30px;
+  font-size: 3vw;
 }
 
 #slider {
